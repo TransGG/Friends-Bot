@@ -15,6 +15,7 @@ exports.run = async (client, interaction) => {
             iconURL: client.user.avatarURL()
         })
 
+    interaction.member.roles.remove(process.env.FRIEND_ROLE);
 
     return interaction.update({
         embeds: [leave],

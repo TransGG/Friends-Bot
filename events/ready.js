@@ -133,7 +133,7 @@ Please be respectful to each other and have fun!
                         .setColor("0xFFC0CB")
                     channel.send({
                         content: `A new friend thread has been created!
-You have been matched with ${group.length} other people!`,
+You have been matched with ${group.length - 1} other people!`,
                         embeds: [welcomeMessage, rules, report],
                         // files: [attachment]
                     })
