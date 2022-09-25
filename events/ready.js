@@ -34,18 +34,17 @@ Once you are matched you will receive an @mention, make sure not to miss it <3
         })
 
 
-
-    client.guilds.cache.get(process.env.GUILD).channels.cache.get(process.env.FRIEND_CHANNEL).send({
-        embeds: [embed],
-        components: [
-            new ActionRowBuilder().addComponents(
-                new ButtonBuilder({})
-                .setCustomId(`friend`)
-                .setLabel("Join / Leave Friend Queue")
-                .setStyle(2),
-            )
-        ]
-    });
+    // client.guilds.cache.get(process.env.GUILD).channels.cache.get(process.env.FRIEND_CHANNEL).send({
+    //     embeds: [embed],
+    //     components: [
+    //         new ActionRowBuilder().addComponents(
+    //             new ButtonBuilder({})
+    //             .setCustomId(`friend`)
+    //             .setLabel("Join / Leave Friend Queue")
+    //             .setStyle(2),
+    //         )
+    //     ]
+    // });
 
 
     setInterval(() => {
