@@ -41,20 +41,33 @@ exports.run = async (client, interaction) => {
             iconURL: client.user.avatarURL()
         })
 
-    if (interaction.member.roles.cache.has(process.env.FRIEND_BAN_ROLE)) return interaction.reply({
+    let channel = interaction.guild.channels.cache.find(c => c.name === "new-friends")
+    let role = interaction.guild.roles.cache.find(r => r.name === "Friend Queue");
+    let friendBannedRole = interaction.guild.roles.cache.find(r => r.name === "Friend Banned");
+
+    if (!role || !channel || !friendBannedRole) {
+        return interaction.reply({
+            content: `The required roles or required channel was not found. Please contact an admin to fix this issue.\n\nRequired channel titled: "new-friends"\nRequired channel titled: "friend-logs"\nRequired role titled: "Friend Queue"\nRequired role titled: "Friend Banned"`,
+            ephemeral: true
+        });
+    }
+
+    if (interaction.member.roles.cache.has(friendBannedRole.id)) return interaction.reply({
         embeds: [banned],
         ephemeral: true
     });
 
+
+
     const embed = new EmbedBuilder()
         .setTitle("***You have joined the friend queue!*** :tada:")
-        .setDescription(`**You will only be apart of this queue for 1 hour.**
+        .setDescription(`**You will only be a part of this queue for 1 hour.**
 
 > *If you are not matched within that time, you will be removed from the queue.*
 
 ***Once you are matched you will receive an @mention, make sure not to miss it!*** :heart:
 
-> You can leave the queue at any time by clicking the button inside of <#${process.env.FRIEND_CHANNEL}> or by using the </friend:1> command.`)
+> You can leave the queue at any time by clicking the button inside of <#${channel.id}> or by using the </friend:1> command.`)
         .setColor(0x00AE86)
         .setFooter({
             text: client.user.username + "#" + client.user.discriminator,
@@ -67,12 +80,15 @@ exports.run = async (client, interaction) => {
     });
 
     // add the friend role to the user
-    interaction.member.roles.add(process.env.FRIEND_ROLE);
+    interaction.member.roles.add(role);
 
     // add the user to the friend queue with their id and the time they joined
     client.friendQueue.add({
         id: interaction.member.id,
-        time: Date.now()
+        tag: interaction.member.user.tag,
+        guild: interaction.guild.id,
+        channel: interaction.channel.id,
+        time: Date.now(),
     });
 
 }

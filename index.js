@@ -1,16 +1,23 @@
 const fs = require("fs");
-const Discord = require('discord.js');
+const {Client, GatewayIntentBits, Collection} = require('discord.js');
 
-const client = new Discord.Client({
-    intents: ['Guilds', 'GuildMembers'],
+
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildMembers,
+    ]
 });
 
 require('./utils/registerSlash')(client);
 
 require("dotenv").config()
 
-client.handler = new Discord.Collection();
+client.handler = new Collection();
 client.friendQueue = new Set();
+client.link = new Map();
 
 process.on('unhandledRejection', error => {
     console.error('Unhandled promise rejection:', error);
